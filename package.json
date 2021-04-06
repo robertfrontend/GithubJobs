@@ -10,9 +10,14 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "bootstrap-vue": "^2.21.2",
     "core-js": "^3.9.1",
     "element-ui": "^2.15.1",
-    "nuxt": "^2.15.3"
+    "nuxt": "^2.15.3",
+    "proxy": "https://jobs.github.com",
+    "vue": "^2.6.12"
   },
   "devDependencies": {}
 }
