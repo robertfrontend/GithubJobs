@@ -1,16 +1,20 @@
 <template>
   <div class="w-100">
-
     <template v-if="loading === true">
-      <b-row v-for="(item, index) in arrayLoading" :key="index" >
+      <b-row v-for="(item, index) in arrayLoading" :key="index">
         <b-col cols="auto">
-          <b-skeleton animation="wave" width="100%" style="border-radius: 4px" height="12vh"></b-skeleton
+          <b-skeleton
+            animation="wave"
+            width="100%"
+            style="border-radius: 4px"
+            height="12vh"
+          ></b-skeleton
         ></b-col>
         <b-col cols="10"
           ><b-skeleton animation="wave" width="100%" height="12vh"></b-skeleton
         ></b-col>
       </b-row>
-    </template> 
+    </template>
 
     <b-row>
       <b-col cols="12" v-for="item in jobsArray" :key="item.id" class="my-2">
@@ -46,8 +50,7 @@ export default {
       jobsArray: "",
       loading: false,
 
-
-      arrayLoading: [1,2,3]
+      arrayLoading: [1, 2, 3],
     };
   },
 

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <Header />
     <div class="header-buscador">
       <b-row align-v="center" align-h="center" style="padding-top: 2.5em">
         <b-col md="6" class="my-2 my-md-0 mx-4 mx-md-0">
@@ -31,7 +30,6 @@
 <script>
 import SidebarSearch from "@/components/SidebarSearch.vue";
 import JobsGeneral from "@/components/JobsGeneral.vue";
-import Header from "@/components/Header.vue";
 export default {
   data() {
     return {
@@ -40,7 +38,6 @@ export default {
   },
 
   components: {
-    Header,
     SidebarSearch,
     JobsGeneral,
   },
