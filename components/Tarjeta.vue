@@ -1,45 +1,38 @@
 <template>
   <div class="tarjeta">
-    <b-row align-v="stretch">
-      <b-col cols="2">
-        <img
-          class="image mx-2"
-          :src="
-            datos.item.company_logo === null
-              ? 'https://gravatar.com/avatar/6c753164cd2239b9afbc23670a8e1de7?s=400&d=robohash&r=x'
-              : datos.item.company_logo
-          "
-          width="100px"
-          height="100px"
-          :alt="datos.item.company"
-        />
-      </b-col>
-      <b-col cols="auto" class="mx-sm-2 mx-md-0">
-        <div>
-          <p class="m-0"><b>{{ datos.item.company }}</b></p>
-          <h5 style="font-size: 100%"> {{ datos.item.title  }} </h5>
-          <b-row class="mt-3">
-            <b-col md="2">
-              <el-tag size="medium"><b> {{ datos.item.type }} </b></el-tag>
-            </b-col>
-            <b-col md="10" >
-              <b-row align-h="end" align-v="center">
-                <b-col cols="auto">
-                  <p style="font-size: 16px" class="m-0">
-                    <i class="el-icon-position mr-1"></i>{{ datos.item.location }}
-                  </p>
-                </b-col>
-                <b-col cols="auto">
-                  <p style="font-size: 16px" class="m-0">
-                    <i class="el-icon-time mr-1"></i>5 day ayo
-                  </p>
-                </b-col>
-              </b-row>
-            </b-col>
-          </b-row>
-        </div>
-      </b-col>
-    </b-row>
+    <div class="tarjeta__image">
+      <img
+        class="image"
+        :src="
+          datos.item.company_logo === null
+            ? 'https://gravatar.com/avatar/6c753164cd2239b9afbc23670a8e1de7?s=400&d=robohash&r=x'
+            : datos.item.company_logo
+        "
+        :alt="datos.item.company"
+        loading="lazy"
+      />
+    </div>
+    <div class="tarjeta__info">
+      <p class="m-0">
+        <b>{{ datos.item.company }}</b>
+      </p>
+      <h5 style="font-size: 100%">{{ datos.item.title }}</h5>
+      <el-tag size="medium"
+        ><b> {{ datos.item.type }} </b></el-tag
+      >
+      <b-row align-h="end" align-v="center" class="pr-2">
+        <b-col md="auto">
+          <p style="font-size: 16px" class="m-0">
+            <i class="el-icon-position mr-1"></i>{{ datos.item.location }}
+          </p>
+        </b-col>
+        <b-col md="auto">
+          <p style="font-size: 16px" class="m-0">
+            <i class="el-icon-time mr-1"></i>5 day ayo
+          </p>
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
@@ -54,18 +47,37 @@ export default {
 <style scoped>
 .tarjeta {
   width: 100%;
+  min-height: 12vh;
   background: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  padding: 10px 10px;
-  color: #334680;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: row;
 }
-.image {
-  object-fit: contain;
-  border-radius: 4px;
+.tarjeta__image {
+  width: 20%;
+  height: inherit;
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tarjeta__image img {
   width: 100%;
+  object-fit: contain;
 }
-h4 {
-  font-weight: 400;
+
+.tarjeta__info {
+  width: 80%;
+  padding: 1em 0;
+}
+
+@media screen and (max-width:421px) {
+  .tarjeta__image{
+    width: 30%;
+  }
+  .tarjeta__info{
+    width: 70%;
+  }
 }
 </style>

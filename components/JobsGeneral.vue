@@ -23,8 +23,13 @@
     </b-row>
 
     <b-alert :show="jobsArray.length === 0 && loading != true"
-      >No hay mas ofertas de trabajos</b-alert
-    >
+      >No hay mas ofertas de trabajos
+      <br />
+    </b-alert>
+
+    <div class="text-center" v-if="jobsArray.length === 0 && loading != true">
+      <el-button type="primary" size="small">Restart</el-button>
+    </div>
 
     <b-pagination
       class="mt-2"
@@ -51,34 +56,88 @@ export default {
       loading: false,
 
       arrayLoading: [1, 2, 3],
+
+      cors_api: "https://cors-anywhere-venky.herokuapp.com/",
+
+      filtroSidebar: false,
     };
   },
 
   created() {
-    this.getJobs(this.currentPage);
+    this.getJobs("", this.currentPage, "getTodo");
   },
 
   methods: {
-    async getJobs(perPage) {
+    async getJobs(dato, perPage, tipo) {
+      this.loading = true;
       this.jobsArray = "";
-      try {
-        const cors_api = "https://cors-anywhere-venky.herokuapp.com/";
-        this.loading = true;
+
+      const url = "https://jobs.github.com/";
+
+      // traemos todas las ofertas
+      if (tipo === "getTodo") {
+        console.log("Peticion 1");
+        try {
+          const respuesta = await this.$axios.$get(
+            `${this.cors_api}https://jobs.github.com/positions.json?&page=${perPage}`
+          );
+
+          this.jobsArray = respuesta;
+        } catch (err) {
+          console.log(err, "error get normal");
+        }
+      }
+
+      // filtrado por location y por fulltime
+      else if (tipo === "filtroSidebar") {
+        this.filtroSidebar = true;
+        console.log("Peticion 2");
+
+        try {
+          const locationURL = `${url}positions.json?full_time=${dato.fullTime}&location=${dato.location}`;
+          const respuesta = await this.$axios.$get(this.cors_api + locationURL);
+          this.jobsArray = respuesta;
+        } catch (error) {
+          console.log(error, "error filtroSidebar");
+        }
+      }
+      // filtrado por pagina y por location
+      else if (tipo === "filtroSidebar" || this.filtroSidebar) {
+        console.log("Peticion 3");
+        // traer paginas del filtro de sidebar
+        const locationURL = `${url}positions.json?full_time=${dato.fullTime}&location=${dato.location}${perPage}`;
+        const respuesta = await this.$axios.$get(this.cors_api + locationURL);
+        console.log(respuesta, "respuesta location + perpage");
+        this.jobsArray = respuesta;
+      }
+      // filtro por pagina normal
+      else {
+        if (this.filtroSidebar) return;
+        console.log("Peticion 4");
         const respuesta = await this.$axios.$get(
-          `${cors_api}https://jobs.github.com/positions.json?&page=${perPage}`
+          `${this.cors_api}https://jobs.github.com/positions.json?&page=${perPage}`
         );
 
-        this.loading = false;
         this.jobsArray = respuesta;
-        console.log(respuesta);
-      } catch (err) {}
+      }
+      
+       if(tipo === 'page') {
+         console.log('poor pagina');
+      }
+
+      this.loading = false;
+    },
+
+    filtroLocation(dato) {
+      // console.log("para filtrar", dato);
+      this.getJobs(dato, this.currentPage, "filtroSidebar");
     },
   },
 
   watch: {
     currentPage() {
       console.log("per page", this.currentPage);
-      this.getJobs(this.currentPage);
+      this.getJobs("", this.currentPage, "page");
     },
   },
 

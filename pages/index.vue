@@ -17,10 +17,10 @@
     <section class="seccionJobs">
       <b-row>
         <b-col lg="4">
-          <SidebarSearch />
+          <SidebarSearch  @buscarCiudades="buscarCiudades"/>
         </b-col>
         <b-col lg="8">
-          <JobsGeneral />
+          <JobsGeneral  ref="jobsgeneral"/>
         </b-col>
       </b-row>
     </section>
@@ -35,6 +35,12 @@ export default {
     return {
       inputSearch: "",
     };
+  },
+
+  methods: {
+    buscarCiudades(data) {
+      this.$refs.jobsgeneral.filtroLocation(data)
+    }
   },
 
   components: {
