@@ -28,7 +28,7 @@
     </b-alert>
 
     <div class="text-center" v-if="jobsArray.length === 0 && loading != true">
-      <el-button type="primary" size="small">Restart</el-button>
+      <el-button type="primary" size="small" @click="getJobs('', 1, 'getTodo')">Restart</el-button>
     </div>
 
     <b-pagination
