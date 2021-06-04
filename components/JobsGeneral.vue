@@ -1,5 +1,8 @@
 <template>
   <div class="w-100">
+
+    <template v-if="inputSearch"><h4>Resultados de:</h4></template>
+
     <template v-if="loading === true">
       <b-row v-for="(item, index) in arrayLoading" :key="index">
         <b-col cols="auto">
@@ -31,13 +34,15 @@
       <el-button type="primary" size="small" @click="getJobs('', 1, 'getTodo')">Restart</el-button>
     </div>
 
-    <b-pagination
-      class="mt-2"
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="my-table"
-    ></b-pagination>
+    <template v-if="!inputSearch">
+      <b-pagination
+        class="mt-2"
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-table"
+      ></b-pagination>
+    </template>
   </div>
 </template>
 
@@ -60,6 +65,8 @@ export default {
       cors_api: "https://cors-anywhere-venky.herokuapp.com/",
 
       filtroSidebar: false,
+
+      inputSearch:false
     };
   },
 
@@ -69,14 +76,16 @@ export default {
 
   methods: {
     async getJobs(dato, perPage, tipo) {
+      this.inputSearch = false
       this.loading = true;
       this.jobsArray = "";
 
       const url = "https://jobs.github.com/";
 
+      // TODO: optimizar codigo
+
       // traemos todas las ofertas
       if (tipo === "getTodo") {
-        console.log("Peticion 1");
         try {
           const respuesta = await this.$axios.$get(
             `${this.cors_api}https://jobs.github.com/positions.json?&page=${perPage}`
@@ -91,7 +100,6 @@ export default {
       // filtrado por location y por fulltime
       else if (tipo === "filtroSidebar") {
         this.filtroSidebar = true;
-        console.log("Peticion 2");
 
         try {
           const locationURL = `${url}positions.json?full_time=${dato.fullTime}&location=${dato.location}`;
@@ -101,28 +109,24 @@ export default {
           console.log(error, "error filtroSidebar");
         }
       }
+
       // filtrado por pagina y por location
       else if (tipo === "filtroSidebar" || this.filtroSidebar) {
-        console.log("Peticion 3");
         // traer paginas del filtro de sidebar
         const locationURL = `${url}positions.json?full_time=${dato.fullTime}&location=${dato.location}${perPage}`;
         const respuesta = await this.$axios.$get(this.cors_api + locationURL);
         console.log(respuesta, "respuesta location + perpage");
         this.jobsArray = respuesta;
       }
+
       // filtro por pagina normal
       else {
         if (this.filtroSidebar) return;
-        console.log("Peticion 4");
         const respuesta = await this.$axios.$get(
           `${this.cors_api}https://jobs.github.com/positions.json?&page=${perPage}`
         );
 
         this.jobsArray = respuesta;
-      }
-      
-       if(tipo === 'page') {
-         console.log('poor pagina');
       }
 
       this.loading = false;
@@ -132,11 +136,30 @@ export default {
       // console.log("para filtrar", dato);
       this.getJobs(dato, this.currentPage, "filtroSidebar");
     },
+
+
+    // search input 
+    async searchInput(data) {
+      this.jobsArray = []
+      this.loading = true
+      try {
+        const respuesta = await this.$axios.$get(
+          `${this.cors_api}https://jobs.github.com/positions.json?search=${data}`
+          );
+
+        this.jobsArray = respuesta;
+        this.inputSearch = true
+
+      } catch (error) {
+        console.log(error, 'error search');
+      }
+
+      this.loading = false
+    }
   },
 
   watch: {
     currentPage() {
-      console.log("per page", this.currentPage);
       this.getJobs("", this.currentPage, "page");
     },
   },

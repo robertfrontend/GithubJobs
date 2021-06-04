@@ -10,7 +10,7 @@
           ></el-input>
         </b-col>
         <b-col md="auto" class="my-2 my-md-0 mx-4 text-center mx-md-0">
-          <el-button type="primary" icon="el-icon-search">Buscar</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="buscarJobs">Buscar</el-button>
         </b-col>
       </b-row>
     </div>
@@ -31,22 +31,35 @@
 import SidebarSearch from "@/components/SidebarSearch.vue";
 import JobsGeneral from "@/components/JobsGeneral.vue";
 export default {
+
+  components: {
+    SidebarSearch,
+    JobsGeneral,
+  },
+
   data() {
     return {
       inputSearch: "",
+
+
+      cors_api: "https://cors-anywhere-venky.herokuapp.com/",
     };
   },
 
   methods: {
     buscarCiudades(data) {
       this.$refs.jobsgeneral.filtroLocation(data)
+    },
+
+
+    buscarJobs() {
+      if(this.inputSearch != ''){
+        this.$refs.jobsgeneral.searchInput(this.inputSearch)
+      }
+
     }
   },
 
-  components: {
-    SidebarSearch,
-    JobsGeneral,
-  },
 };
 </script>
 
