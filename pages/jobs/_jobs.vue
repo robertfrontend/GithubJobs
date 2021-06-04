@@ -1,7 +1,7 @@
 <template>
   <b-container v-if="jobs">
     <b-row class="mt-4">
-      <b-col cols="3">
+      <b-col md="3">
         <nuxt-link to="/"><i class="el-icon-back"></i> Back to search</nuxt-link>
         <div class="mt-4">
           <h6 style="color: #b9bdcf"><b>HOW TO APPLY</b></h6>
@@ -11,7 +11,7 @@
           </p>
         </div>
       </b-col>
-      <b-col cols="9">
+      <b-col md="12" lg="9">
         <b-row>
           <b-col cols="auto">
             <h5 style="color: #334680; font-weight: bold">{{ jobs.title }}</h5>
@@ -21,16 +21,16 @@
               ><b> {{ jobs.type }} </b></el-tag
             >
           </b-col>
-          <b-col cols="12">
+          <b-col md="12">
             <p>{{ jobs.created_at }}</p>
           </b-col>
         </b-row>
 
         <b-row>
-          <b-col cols="1">
+          <b-col md="1">
             <img :src="jobs.company_logo" width="60" alt="" />
           </b-col>
-          <b-col cols="auto">
+          <b-col md="auto">
             <p class="mt-2 mb-0">
               <b>{{ jobs.company }}</b>
             </p>
@@ -38,7 +38,7 @@
               <i class="el-icon-position mr-1"></i><b>{{ jobs.location }}</b>
             </p>
           </b-col>
-          <b-col cols="12">
+          <b-col md="12">
             <div id="descripcion">{{jobs.description}}</div>
           </b-col>
         </b-row>
