@@ -42,6 +42,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
   target: 'static',
+  ssr: false,
 
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
